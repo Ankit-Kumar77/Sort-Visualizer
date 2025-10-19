@@ -168,7 +168,7 @@ Your basic sorting visualizer has been **completely transformed** into Algorithm
 
 ## 🎓 **READY TO USE!**
 
-Your Algorithm Academy is now **complete and ready for educational use**:
+Algorithm Academy **Now ready for educational use**:
 
 1. **Open `index.html`** in any modern web browser
 2. **Select any of the 8 algorithms** from the dropdown
