@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" rel="stylesheet" />
+
+  <link rel="shortcut icon" type="image/x-icon" href="favicon.ico" />
+  <link rel="stylesheet" href="./css/style.css" />
+  <title>Algorithm Visualizer | Learn Sorting Algorithms</title>
+</head>
+
+<body>
+  <!-- Header -->
+  <header class="header">
+    <div class="header-content">
+      <div class="logo">
+        <i class="fas fa-graduation-cap"></i>
+        <h1>Algorithm Academy</h1>
+        <span class="subtitle">Interactive Sorting Algorithm Learning Platform</span>
+      </div>
+      <nav class="header-nav">
+        <button class="nav-btn" id="homeBtn"><i class="fas fa-home"></i> Learn</button>
+        <button class="nav-btn" id="practiceBtn"><i class="fas fa-flask"></i> Practice</button>
+        <button class="nav-btn" id="compareBtn"><i class="fas fa-chart-line"></i> Compare</button>
+        <button class="nav-btn" id="progressBtn"><i class="fas fa-trophy"></i> Progress</button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main Dashboard -->
+  <div class="dashboard">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-section">
+        <h3><i class="fas fa-cog"></i> Configuration</h3>
+        <div class="control-group">
+          <label for="algorithmSelect">Algorithm</label>
+          <select id="algorithmSelect" class="professional-select">
+            <option value="0">Select Algorithm</option>
+            <option value="1">Bubble Sort</option>
+            <option value="2">Selection Sort</option>
+            <option value="3">Insertion Sort</option>
+            <option value="4">Merge Sort</option>
+            <option value="5">Quick Sort</option>
+            <option value="6">Heap Sort</option>
+            <option value="7">Counting Sort</option>
+            <option value="8">Radix Sort</option>
+          </select>
+        </div>
+        
+        <div class="control-group">
+          <label for="arraySizeSelect">Array Size</label>
+          <select id="arraySizeSelect" class="professional-select">
+            <option value="0">Select Size</option>
+            <option value="10">10 elements</option>
+            <option value="20">20 elements</option>
+            <option value="30">30 elements</option>
+            <option value="50">50 elements</option>
+            <option value="75">75 elements</option>
+            <option value="100">100 elements</option>
+          </select>
+        </div>
+        
+        <div class="control-group">
+          <label for="speedSelect">Animation Speed</label>
+          <select id="speedSelect" class="professional-select">
+            <option value="1">Normal (1x)</option>
+            <option value="0.5">Slow (0.5x)</option>
+            <option value="0.25">Very Slow (0.25x)</option>
+            <option value="2">Fast (2x)</option>
+            <option value="4">Very Fast (4x)</option>
+          </select>
+        </div>
+        
+        <div class="control-actions">
+          <button class="btn btn-primary" id="generateBtn"><i class="fas fa-dice"></i> Generate Array</button>
+          <button class="btn btn-secondary" id="customArrayBtn"><i class="fas fa-edit"></i> Custom Input</button>
+        </div>
+      </div>
+      
+      <div class="sidebar-section">
+        <h3><i class="fas fa-info-circle"></i> Algorithm Info</h3>
+        <div id="algorithmInfo" class="algorithm-info">
+          <p class="info-placeholder">Select an algorithm to view detailed information, complexity analysis, and implementation details.</p>
+        </div>
+      </div>
+      
+      <div class="sidebar-section">
+        <h3><i class="fas fa-chart-bar"></i> Performance</h3>
+        <div class="performance-metrics">
+          <div class="metric">
+            <span class="metric-label">Comparisons</span>
+            <span class="metric-value" id="comparisonsCount">0</span>
+          </div>
+          <div class="metric">
+            <span class="metric-label">Array Accesses</span>
+            <span class="metric-value" id="accessesCount">0</span>
+          </div>
+          <div class="metric">
+            <span class="metric-label">Time Elapsed</span>
+            <span class="metric-value" id="timeElapsed">0.0s</span>
+          </div>
+        </div>
+      </div>
+    </aside>
+    
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- Visualization Controls -->
+      <div class="viz-controls">
+        <div class="control-panel">
+          <button class="control-btn play-btn" id="playBtn" disabled>
+            <i class="fas fa-play"></i> Start
+          </button>
+          <button class="control-btn pause-btn" id="pauseBtn" style="display: none;">
+            <i class="fas fa-pause"></i> Pause
+          </button>
+          <button class="control-btn step-btn" id="stepBtn" disabled>
+            <i class="fas fa-step-forward"></i> Step
+          </button>
+          <button class="control-btn reset-btn" id="resetBtn">
+            <i class="fas fa-undo"></i> Reset
+          </button>
+        </div>
+        
+        <div class="progress-indicator">
+          <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+          </div>
+          <span class="progress-text" id="progressText">Ready to start</span>
+        </div>
+      </div>
+      
+      <!-- Visualization Area -->
+      <div class="visualization-container">
+        <div class="array-container" id="arrayContainer">
+          <!-- Array bars will be inserted here -->
+        </div>
+      </div>
+      
+      <!-- Code and Explanation Panel -->
+      <div class="code-explanation-panel">
+        <div class="panel-tabs">
+          <button class="tab active" data-tab="pseudocode">Pseudocode</button>
+          <button class="tab" data-tab="implementation">Implementation</button>
+          <button class="tab" data-tab="explanation">Step Explanation</button>
+        </div>
+        
+        <div class="tab-content active" id="pseudocode-tab">
+          <pre><code class="language-text" id="pseudocodeContent">Select an algorithm to view its pseudocode</code></pre>
+        </div>
+        
+        <div class="tab-content" id="implementation-tab">
+          <pre><code class="language-javascript" id="implementationContent">Select an algorithm to view its implementation</code></pre>
+        </div>
+        
+        <div class="tab-content" id="explanation-tab">
+          <div id="stepExplanation" class="step-explanation">
+            <p>Start the algorithm to see step-by-step explanations</p>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+  
+  <div class="progress-container" style="display: none;">
+    <div class="progress-bar">
+      <div class="progress-fill"></div>
+    </div>
+    <div class="stats">
+      <span class="stat-item">Comparisons: <span id="comparisons">0</span></span>
+      <span class="stat-item">Swaps: <span id="swaps">0</span></span>
+      <span class="stat-item">Time: <span id="timer">0.0s</span></span>
+    </div>
+  </div>
+  
+  <div class="info-modal" id="infoModal" style="display: none;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="algoName">Algorithm Information</h3>
+        <span class="close" id="closeModal">&times;</span>
+      </div>
+      <div class="modal-body">
+        <div class="complexity-info">
+          <div class="complexity-item">
+            <strong>Time Complexity:</strong>
+            <div class="complexity-values">
+              <span>Best: <span id="bestTime">-</span></span>
+              <span>Average: <span id="avgTime">-</span></span>
+              <span>Worst: <span id="worstTime">-</span></span>
+            </div>
+          </div>
+          <div class="complexity-item">
+            <strong>Space Complexity:</strong> <span id="spaceComplexity">-</span>
+          </div>
+          <div class="complexity-item">
+            <strong>Stable:</strong> <span id="stable">-</span>
+          </div>
+          <div class="complexity-item">
+            <strong>In-place:</strong> <span id="inPlace">-</span>
+          </div>
+        </div>
+        <div class="algorithm-description">
+          <h4>Description:</h4>
+          <p id="algoDescription">Select an algorithm to see its description.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="custom-input-modal" id="customModal" style="display: none;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Enter Custom Array</h3>
+        <span class="close" onclick="closeCustomModal()">&times;</span>
+      </div>
+      <div class="modal-body">
+        <p>Enter numbers separated by commas (max 100 values, range 1-100):</p>
+        <textarea id="customArrayInput" placeholder="e.g., 64, 34, 25, 12, 22, 11, 90" rows="3"></textarea>
+        <div class="modal-buttons">
+          <button onclick="applyCustomArray()" class="apply-btn">Apply</button>
+          <button onclick="closeCustomModal()" class="cancel-btn">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="tutorial-modal" id="tutorialModal" style="display: none;">
+    <div class="modal-content tutorial-content">
+      <div class="modal-header">
+        <h3 id="tutorialTitle">Welcome to Sort Visualizer!</h3>
+        <span class="close" id="closeTutorial">&times;</span>
+      </div>
+      <div class="modal-body">
+        <div class="tutorial-step" id="tutorialStep">
+          <!-- Tutorial content will be dynamically loaded here -->
+        </div>
+        <div class="tutorial-navigation">
+          <button id="prevStep" class="nav-btn" disabled>← Previous</button>
+          <span class="step-indicator" id="stepIndicator">1 / 6</span>
+          <button id="nextStep" class="nav-btn">Next →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="center">
+    <div class="array"></div>
+  </div>
+  
+  <footer class="footer">
+    <p>Created with <i class="fa fa-heart"></i> by Ankit.</p>
+    <p>
+      <a href="https://www.linkedin.com/in/ankit-kumarrr" target="_blank" class="link">
+        <i class="fa fa-linkedin-square" aria-hidden="true"></i>
+      </a>
+      <a href="https://github.com/Ankit-Kumar77" target="_blank" class="link">
+        <i class="fa fa-github" aria-hidden="true"></i>
+      </a>
+    </p>
+  </footer>
+
+  <script src="./scripts/app.js"></script>
+  <script src="./scripts/helper.js"></script>
+  <script src="./scripts/sort-algorithms.js"></script>
+</body>
+
+</html>
